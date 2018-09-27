@@ -1,35 +1,35 @@
-# Решение для обратной матрицы с использованием кеширования
-# Результат - в функции makeCashMatrix
-###############################################################
+# Solution for inverse matrix using caching
+# The result is in the makeCashMatrix
+#############
 
 ###################################
-# Функция makeCashMartix создает среду
-# Обратная матрица помещена внутри объекта
-# Результат функции - это список из 5 названных элементов, которые определены
-# пять функций
+# The makeCashMartix function creates an environment
+# The inverse matrix is placed inside the object
+# The result of a function is a list of 5 named elements that are defined
+# five functions
 ###################################
 
 makeCacheMatrix <- function(x = matrix()) {
-# Пример: Вставить матрицу, например x <-матрица (rnorm (64), 8,8)
-## Чтобы проверить кешированные значения:
-# xMat <-makeCacheMatrix (x) # Запустить функцию
-# parent.env (xMat $ getenv ()) $ m # Проверить значение кэширования
-# среда (xMat $ getmean) # ссылается на среду "m"
-m<-NULL  # присваивает NULL переменной в текущей среде
-evn <- environment()  # Сохранить среду
+# Example: Insert a matrix, for example, x <-matrix (rnorm (64), 8,8)
+## To check the cached values:
+# xMat <-makeCacheMatrix (x) # Run the function
+# parent.env (xMat $ getenv ()) $ m # Check the caching value
+# environment (xMat $ getmean) # refers to the environment "m"
+m<-NULL  # assigns a NULL variable to the current environment
+evn <- environment()  # Save Environment
 y<-NULL 
 
-setmatrix<-function(y){  # Установить значение матрицы
-	x<<-y  # кеш-матрица - присваивает значение y из родительской среды
-	m<<-NULL # поиск через родительские среды для существующего определения переменной и установка в NULL
+setmatrix<-function(y){  # Set matrix value
+	x<<-y  # cache matrix-assigns a value of y from the parent environment
+	m<<-NULL # search through the parent environment for the existing variable definition and set to NULL
 	}
   
-getmatrix<-function() x  # Получить значение матрицы, кэшированное с помощью setmatrix
-setinverse<-function(solve) m<<- solve  # Сохраненное значение обратной матрицы сохраняется в m
-getinverse<-function() m  # Получить сохраненное значение обратной матрицы m, которое было сохранено с setinverse
+getmatrix<-function() x  # Get the matrix value cached with setmatrix
+setinverse<-function(solve) m<<- solve # The stored value of the inverse matrix is stored in m
+getinverse<-function() m  # Get the stored value of the inverse matrix m that was saved with setinverse
 getenv<- function() environment()
 
-list (setmatrix=setmatrix, getmatrix = getmatrix, # создает список для размещения четырех функций
+list (setmatrix=setmatrix, getmatrix = getmatrix, # creates a list for placing four functions
 setinverse = setinverse,
 getinverse = getinverse,
 getenv = getenv)
@@ -37,28 +37,28 @@ getenv = getenv)
 }
 
 ###################################
-## Функция «cacheSolve» возвращает обратную матрицу, которая
-# возвращается функцией makeCacheMatrix, например. xMat $ getmatrix ()
+## The "cacheSolve" function returns an inverse matrix that
+# returned by the makeCacheMatrix function, for example. xMat $ getmatrix ()
 ###################################
 
 cacheSolve <- function(xMat= m(), ...) {
-## Возвращаем матрицу, обратную к 'x'
-# Функция запуска, например. например: minv <-cacheSolve (xMat = m)
-# Сравнивает матрицу с тем, что было раньше!
-	m <- xMat$getinverse() # если инверсия уже была рассчитана, это получает ее
-	if(!is.null(m)){# проверить, была ли запущена cacheSolve до
-		if(xMat$setmatrix() == xMat$getmatrix()) { # проверить, что матрица не изменилась, а если нет, отправляет текстовое сообщение и возвращает кешированную матрицу
+## Return the matrix inverse to 'x'
+# Startup function, for example. for example: minv <-cacheSolve (xMat = m)
+# Compare the matrix to what was before!
+	m <- xMat$getinverse() # If the inversion has already been calculated, it gets it
+	if(!is.null(m)){# Check if cacheSolve was running before
+		if(xMat$setmatrix() == xMat$getmatrix()) { # check that the matrix has not changed, and if not, it sends a text message and returns the cached matrix
     	message("getting cached data")
     	matrix<-xMat$get()
     	m<-solve(matrix, ...)
     	xMat$setmatrix(m)
     	return(m) 
     	}    
-    	y <- xMat$getmatrix() # запустить функцию getmatrix для получения значения входной матрицы
-    	xMat$setmatrix(y)# запустить функцию setmatrix на входной матрице для ее кеширования
-    	m <- solve(y, ...) # вычислить значение обратного входной матрицы
+    	y <- xMat$getmatrix() # run the getmatrix function to get the value of the input matrix
+    	xMat$setmatrix(y)# run the setmatrix function on the input matrix for its caching
+    	m <- solve(y, ...) # calculate the value of the inverse input matrix
 
-    	xMat$setinverse(m) # запустить функцию setinverse в обратном кэшировании обратного
+    	xMat$setinverse(m) # run the setinverse function in reverse reverse caching
     	m 
     	}
     	
